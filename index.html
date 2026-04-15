@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Registration</title>
+</head>
+<body>
+
+<h2>Event Registration</h2>
+
+<form id="form">
+
+  <input type="text" name="name" placeholder="Name" required>
+
+  <input type="text" name="phone"
+         placeholder="Phone (8 digits)"
+         required
+         pattern="^[89][0-9]{7}$">
+
+  <select name="diet" required>
+    <option value="">Select Diet</option>
+    <option value="Veg">Veg</option>
+    <option value="Non-Veg">Non-Veg</option>
+  </select>
+
+  <!-- PDPA -->
+  <label>
+    <input type="checkbox" name="pdpa" required>
+    I agree to PDPA terms
+  </label>
+
+  <!-- Honeypot (hidden) -->
+  <input type="text" name="company" style="display:none">
+
+  <button type="submit" id="btn">Submit</button>
+
+</form>
+
+<p id="msg"></p>
+
+<script>
+const form = document.getElementById("form");
+const msg = document.getElementById("msg");
+const btn = document.getElementById("btn");
+
+let lock = false;
+
+form.addEventListener("submit", async (e) => {
+  e.preventDefault();
+
+  if (lock) return;
+  lock = true;
+  btn.disabled = true;
+  btn.innerText = "Submitting...";
+
+  const data = {
+    name: form.name.value,
+    phone: form.phone.value,
+    diet: form.diet.value,
+    pdpa: form.pdpa.checked,
+    company: form.company.value,
+    origin: window.location.origin
+  };
+
+  try {
+    const res = await fetch("YOUR_APPS_SCRIPT_URL", {
+      method: "POST",
+      body: JSON.stringify(data)
+    });
+
+    const result = await res.json();
+
+    if (result.status === "success") {
+      msg.innerText = "Registration successful!";
+      form.reset();
+    } else {
+      msg.innerText = result.message;
+    }
+
+  } catch (err) {
+    msg.innerText = "Error submitting form";
+  }
+
+  lock = false;
+  btn.disabled = false;
+  btn.innerText = "Submit";
+});
+</script>
+
+</body>
+</html>
