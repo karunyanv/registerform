@@ -1,202 +1,761 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Event Registration</title>
-
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Labour Day Celebration — Registration</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet" />
   <style>
+    :root {
+      --gold: #C9952A;
+      --gold-light: #F5D98A;
+      --gold-dark: #8B6514;
+      --cream: #FDF8EE;
+      --cream-dark: #F4EDDA;
+      --rich-red: #8B1A1A;
+      --rich-red-light: #C23B3B;
+      --navy: #1A2744;
+      --navy-light: #2A3D6B;
+      --text-dark: #1A1208;
+      --text-mid: #4A3B1F;
+      --text-muted: #8B7654;
+      --white: #FFFFFF;
+      --shadow: 0 8px 40px rgba(26, 16, 4, 0.15);
+      --shadow-sm: 0 2px 12px rgba(26, 16, 4, 0.08);
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
     body {
-      margin: 0;
-      font-family: Arial, sans-serif;
-      background: linear-gradient(135deg, #667eea, #764ba2);
-      height: 100vh;
+      font-family: 'DM Sans', sans-serif;
+      background: var(--navy);
+      min-height: 100vh;
+      color: var(--text-dark);
+      position: relative;
+      overflow-x: hidden;
+    }
+
+    /* Decorative background */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background:
+        radial-gradient(ellipse 80% 60% at 20% 10%, rgba(201,149,42,0.18) 0%, transparent 60%),
+        radial-gradient(ellipse 60% 80% at 80% 90%, rgba(139,26,26,0.2) 0%, transparent 60%),
+        linear-gradient(160deg, #0D1A36 0%, #1A2744 40%, #0D1225 100%);
+      z-index: 0;
+    }
+
+    /* Floating crosses decoration */
+    body::after {
+      content: '✦ ✦ ✦ ✦ ✦ ✦ ✦ ✦ ✦ ✦ ✦ ✦';
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      text-align: center;
+      font-size: 10px;
+      letter-spacing: 28px;
+      color: rgba(201,149,42,0.12);
+      padding: 20px;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .page-wrapper {
+      position: relative;
+      z-index: 1;
+      padding: 2rem 1rem 4rem;
       display: flex;
-      justify-content: center;
+      flex-direction: column;
       align-items: center;
     }
 
-    .card {
-      width: 92%;
-      max-width: 380px;
-      background: white;
-      border-radius: 16px;
-      padding: 20px;
-      box-shadow: 0 10px 25px rgba(0,0,0,0.2);
-      animation: fadeIn 0.4s ease-in-out;
-    }
-
-    @keyframes fadeIn {
-      from { transform: translateY(20px); opacity: 0; }
-      to { transform: translateY(0); opacity: 1; }
-    }
-
-    h2 {
-      text-align: center;
-      margin-bottom: 15px;
-    }
-
-    input, select {
+    /* Header Banner */
+    .banner {
       width: 100%;
-      padding: 12px;
-      margin: 10px 0;
-      border-radius: 10px;
-      border: 1px solid #ddd;
-      font-size: 14px;
-      outline: none;
+      max-width: 680px;
+      text-align: center;
+      padding: 2.5rem 2rem 2rem;
+      margin-bottom: -1px;
+      background: linear-gradient(175deg, var(--rich-red) 0%, #6B1212 100%);
+      border-radius: 24px 24px 0 0;
+      border: 1.5px solid rgba(201,149,42,0.4);
+      border-bottom: none;
+      position: relative;
+      overflow: hidden;
     }
 
-    input:focus, select:focus {
-      border-color: #667eea;
-      box-shadow: 0 0 5px rgba(102,126,234,0.4);
+    .banner::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: repeating-linear-gradient(
+        45deg,
+        transparent,
+        transparent 20px,
+        rgba(255,255,255,0.02) 20px,
+        rgba(255,255,255,0.02) 40px
+      );
     }
 
-    label {
-      font-size: 13px;
+    .banner-label {
+      font-family: 'DM Sans', sans-serif;
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 4px;
+      text-transform: uppercase;
+      color: var(--gold-light);
+      margin-bottom: 0.75rem;
+      position: relative;
+    }
+
+    .banner-label::before, .banner-label::after {
+      content: '—';
+      margin: 0 12px;
+      opacity: 0.6;
+    }
+
+    .banner h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(2rem, 6vw, 3.2rem);
+      font-weight: 900;
+      color: var(--white);
+      line-height: 1.1;
+      margin-bottom: 0.5rem;
+      position: relative;
+      text-shadow: 0 2px 20px rgba(0,0,0,0.4);
+    }
+
+    .banner h1 span {
+      color: var(--gold-light);
+    }
+
+    .banner-subtitle {
+      font-size: 15px;
+      color: rgba(255,255,255,0.75);
+      font-weight: 300;
+      margin-bottom: 1.25rem;
+      position: relative;
+    }
+
+    .banner-date-row {
+      display: flex;
+      justify-content: center;
+      gap: 1.5rem;
+      flex-wrap: wrap;
+      position: relative;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(201,149,42,0.2);
+      border: 1px solid rgba(201,149,42,0.45);
+      border-radius: 100px;
+      padding: 5px 14px;
+      font-size: 12px;
+      color: var(--gold-light);
+      font-weight: 500;
+      letter-spacing: 0.3px;
+    }
+
+    .badge svg { width: 12px; height: 12px; flex-shrink: 0; }
+
+    /* Form card */
+    .form-card {
+      width: 100%;
+      max-width: 680px;
+      background: var(--cream);
+      border: 1.5px solid rgba(201,149,42,0.3);
+      border-top: none;
+      border-radius: 0 0 24px 24px;
+      padding: 2.5rem 2.5rem 3rem;
+      box-shadow: var(--shadow);
+    }
+
+    .section-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--rich-red);
+      letter-spacing: 0.5px;
+      margin-bottom: 1.25rem;
+      padding-bottom: 0.5rem;
+      border-bottom: 1.5px solid var(--cream-dark);
       display: flex;
       align-items: center;
       gap: 8px;
-      margin-top: 5px;
     }
 
-    button {
+    .section-title::before {
+      content: '';
+      display: inline-block;
+      width: 4px;
+      height: 16px;
+      background: var(--gold);
+      border-radius: 2px;
+      flex-shrink: 0;
+    }
+
+    .form-section { margin-bottom: 2rem; }
+
+    .field-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+    }
+
+    @media (max-width: 520px) {
+      .field-row { grid-template-columns: 1fr; }
+      .form-card { padding: 1.5rem 1.25rem 2rem; }
+      .banner { padding: 2rem 1.25rem 1.5rem; }
+    }
+
+    .field {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      margin-bottom: 1rem;
+    }
+
+    .field:last-child { margin-bottom: 0; }
+
+    label {
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 0.8px;
+      text-transform: uppercase;
+      color: var(--text-mid);
+    }
+
+    label .required { color: var(--rich-red); margin-left: 2px; }
+
+    input[type="text"],
+    input[type="email"],
+    input[type="tel"],
+    input[type="number"],
+    select,
+    textarea {
       width: 100%;
-      padding: 12px;
-      margin-top: 15px;
-      background: #667eea;
-      color: white;
-      border: none;
+      padding: 11px 14px;
+      background: var(--white);
+      border: 1.5px solid #D9CDB5;
       border-radius: 10px;
+      font-family: 'DM Sans', sans-serif;
       font-size: 15px;
+      color: var(--text-dark);
+      outline: none;
+      transition: border-color 0.2s, box-shadow 0.2s;
+      appearance: none;
+      -webkit-appearance: none;
+    }
+
+    input:focus, select:focus, textarea:focus {
+      border-color: var(--gold);
+      box-shadow: 0 0 0 3px rgba(201,149,42,0.15);
+    }
+
+    input::placeholder, textarea::placeholder { color: #C4B99A; }
+
+    select {
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%238B7654' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 14px center;
+      padding-right: 38px;
       cursor: pointer;
-      transition: 0.2s;
     }
 
-    button:active {
-      transform: scale(0.97);
+    textarea { resize: vertical; min-height: 90px; line-height: 1.6; }
+
+    /* Radio / Checkbox groups */
+    .radio-group, .check-group {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 4px;
     }
 
-    button:disabled {
-      background: #999;
+    .radio-option, .check-option {
+      position: relative;
     }
 
-    .msg {
-      text-align: center;
-      margin-top: 10px;
-      font-size: 14px;
+    .radio-option input, .check-option input {
+      position: absolute;
+      opacity: 0;
+      width: 0;
+      height: 0;
     }
 
-    .success { color: green; }
-    .error { color: red; }
+    .radio-option label, .check-option label {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 7px 14px;
+      background: var(--white);
+      border: 1.5px solid #D9CDB5;
+      border-radius: 100px;
+      cursor: pointer;
+      font-size: 13px;
+      font-weight: 500;
+      letter-spacing: 0;
+      text-transform: none;
+      color: var(--text-mid);
+      transition: all 0.15s;
+      user-select: none;
+    }
 
-    .loader {
-      border: 3px solid #f3f3f3;
-      border-top: 3px solid #667eea;
-      border-radius: 50%;
-      width: 18px;
-      height: 18px;
-      animation: spin 1s linear infinite;
-      margin: 0 auto;
+    .radio-option input:checked + label,
+    .check-option input:checked + label {
+      background: var(--rich-red);
+      border-color: var(--rich-red);
+      color: var(--white);
+    }
+
+    .radio-option label:hover, .check-option label:hover {
+      border-color: var(--gold);
+      color: var(--gold-dark);
+    }
+
+    /* Divider */
+    .divider {
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--cream-dark) 20%, var(--cream-dark) 80%, transparent);
+      margin: 2rem 0;
+    }
+
+    /* Submit Button */
+    .submit-wrap { text-align: center; margin-top: 2rem; }
+
+    .btn-submit {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      background: linear-gradient(135deg, var(--rich-red) 0%, #6B1212 100%);
+      color: var(--white);
+      font-family: 'DM Sans', sans-serif;
+      font-size: 15px;
+      font-weight: 600;
+      letter-spacing: 0.5px;
+      padding: 14px 40px;
+      border: none;
+      border-radius: 100px;
+      cursor: pointer;
+      transition: transform 0.15s, box-shadow 0.15s, opacity 0.15s;
+      box-shadow: 0 4px 20px rgba(139,26,26,0.4);
+      min-width: 200px;
+    }
+
+    .btn-submit:hover { transform: translateY(-2px); box-shadow: 0 8px 28px rgba(139,26,26,0.45); }
+    .btn-submit:active { transform: translateY(0); }
+    .btn-submit:disabled { opacity: 0.65; cursor: not-allowed; transform: none; }
+
+    .btn-submit svg { width: 18px; height: 18px; }
+
+    .submit-note {
+      font-size: 12px;
+      color: var(--text-muted);
+      margin-top: 0.75rem;
+    }
+
+    /* States */
+    #form-message {
       display: none;
+      margin-top: 1.5rem;
+      padding: 1.25rem 1.5rem;
+      border-radius: 12px;
+      font-size: 14px;
+      font-weight: 500;
+      text-align: center;
     }
 
-    @keyframes spin {
-      100% { transform: rotate(360deg); }
+    #form-message.success {
+      display: block;
+      background: #EEF8EE;
+      border: 1.5px solid #6DB56D;
+      color: #2D6B2D;
     }
+
+    #form-message.error {
+      display: block;
+      background: #FEF0F0;
+      border: 1.5px solid #E57373;
+      color: #8B1A1A;
+    }
+
+    .spinner {
+      display: none;
+      width: 18px; height: 18px;
+      border: 2.5px solid rgba(255,255,255,0.4);
+      border-top-color: var(--white);
+      border-radius: 50%;
+      animation: spin 0.7s linear infinite;
+    }
+
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    /* Footer strip */
+    .footer-strip {
+      width: 100%;
+      max-width: 680px;
+      text-align: center;
+      margin-top: 1.5rem;
+      font-size: 12px;
+      color: rgba(255,255,255,0.3);
+      letter-spacing: 0.3px;
+    }
+
+    /* Ornament */
+    .ornament {
+      text-align: center;
+      font-size: 18px;
+      color: var(--gold);
+      letter-spacing: 12px;
+      margin-bottom: 1.5rem;
+      opacity: 0.7;
+    }
+
+    /* Field hints */
+    .field-hint {
+      font-size: 11px;
+      color: var(--text-muted);
+      margin-top: 2px;
+      letter-spacing: 0;
+      text-transform: none;
+      font-weight: 400;
+    }
+
+    /* Animate in */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(24px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .banner { animation: fadeUp 0.5s ease both; }
+    .form-card { animation: fadeUp 0.5s 0.1s ease both; }
   </style>
 </head>
-
 <body>
+  <div class="page-wrapper">
 
-<div class="card">
-  <h2>Register Now</h2>
+    <!-- Header Banner -->
+    <div class="banner">
+      <div class="banner-label">✦ You are cordially invited ✦</div>
+      <h1>Labour Day<br /><span>Celebration</span></h1>
+      <p class="banner-subtitle">Join us as we honour the spirit of service, community & faith</p>
+      <div class="banner-date-row">
+        <span class="badge">
+          <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="1" y="2" width="14" height="13" rx="2"/><path d="M1 6h14M5 1v2M11 1v2"/></svg>
+          1 May 2025
+        </span>
+        <span class="badge">
+          <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="8" cy="8" r="7"/><path d="M8 4v4l3 2"/></svg>
+          10:00 AM — 4:00 PM
+        </span>
+        <span class="badge">
+          <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M8 1C5.24 1 3 3.24 3 6c0 4.25 5 9 5 9s5-4.75 5-9c0-2.76-2.24-5-5-5z"/><circle cx="8" cy="6" r="1.5"/></svg>
+          Church Grounds
+        </span>
+      </div>
+    </div>
 
-  <form id="form">
+    <!-- Form Card -->
+    <div class="form-card">
+      <div class="ornament">✦ ✦ ✦</div>
 
-    <input type="text" name="name" placeholder="Full Name" required>
+      <form id="reg-form" novalidate>
 
-    <input type="text"
-           name="phone"
-           placeholder="Phone Number"
-           required
-           pattern="^[89][0-9]{7}$">
+        <!-- Personal Info -->
+        <div class="form-section">
+          <div class="section-title">Personal Information</div>
+          <div class="field-row">
+            <div class="field">
+              <label for="first-name">First Name <span class="required">*</span></label>
+              <input type="text" id="first-name" name="firstName" placeholder="Grace" required />
+            </div>
+            <div class="field">
+              <label for="last-name">Last Name <span class="required">*</span></label>
+              <input type="text" id="last-name" name="lastName" placeholder="Mensah" required />
+            </div>
+          </div>
+          <div class="field-row">
+            <div class="field">
+              <label for="email">Email Address <span class="required">*</span></label>
+              <input type="email" id="email" name="email" placeholder="grace@example.com" required />
+            </div>
+            <div class="field">
+              <label for="phone">Phone Number</label>
+              <input type="tel" id="phone" name="phone" placeholder="+65 9123 4567" />
+            </div>
+          </div>
+        </div>
 
-    <select name="diet" required>
-      <option value="">Dietary Preference</option>
-      <option value="Veg">Veg</option>
-      <option value="Non-Veg">Non-Veg</option>
-    </select>
+        <div class="divider"></div>
 
-    <label>
-      <input type="checkbox" name="pdpa" required>
-      I agree to PDPA terms
-    </label>
+        <!-- Church / Dept -->
+        <div class="form-section">
+          <div class="section-title">Church Details</div>
+          <div class="field-row">
+            <div class="field">
+              <label for="department">Department / Ministry <span class="required">*</span></label>
+              <select id="department" name="department" required>
+                <option value="">Select your ministry</option>
+                <option>Worship & Music</option>
+                <option>Children's Ministry</option>
+                <option>Youth Ministry</option>
+                <option>Ushering</option>
+                <option>Media & Communications</option>
+                <option>Prayer & Intercession</option>
+                <option>Evangelism & Outreach</option>
+                <option>Men's Fellowship</option>
+                <option>Women's Fellowship</option>
+                <option>Seniors Ministry</option>
+                <option>Hospitality</option>
+                <option>General Member</option>
+              </select>
+            </div>
+            <div class="field">
+              <label for="membership">Membership Status</label>
+              <select id="membership" name="membership">
+                <option value="">Select status</option>
+                <option>Full Member</option>
+                <option>Associate Member</option>
+                <option>Regular Attendee</option>
+                <option>First-Time Visitor</option>
+              </select>
+            </div>
+          </div>
+        </div>
 
-    <!-- Honeypot -->
-    <input type="text" name="company" style="display:none">
+        <div class="divider"></div>
 
-    <button id="btn" type="submit">Submit</button>
+        <!-- Attendance -->
+        <div class="form-section">
+          <div class="section-title">Attendance Details</div>
+          <div class="field">
+            <label>Will you be attending? <span class="required">*</span></label>
+            <div class="radio-group">
+              <div class="radio-option">
+                <input type="radio" id="att-yes" name="attending" value="Yes" required />
+                <label for="att-yes">✔ Yes, I'll be there!</label>
+              </div>
+              <div class="radio-option">
+                <input type="radio" id="att-no" name="attending" value="No" />
+                <label for="att-no">✘ Unable to attend</label>
+              </div>
+            </div>
+          </div>
+          <div class="field-row">
+            <div class="field">
+              <label for="guests">Number of Guests</label>
+              <input type="number" id="guests" name="guests" min="0" max="20" placeholder="0" value="0" />
+              <span class="field-hint">Not including yourself</span>
+            </div>
+            <div class="field">
+              <label for="tshirt">T-Shirt Size</label>
+              <select id="tshirt" name="tshirt">
+                <option value="">Select size</option>
+                <option>XS</option>
+                <option>S</option>
+                <option>M</option>
+                <option>L</option>
+                <option>XL</option>
+                <option>2XL</option>
+                <option>3XL</option>
+                <option>No T-Shirt</option>
+              </select>
+            </div>
+          </div>
+        </div>
 
-    <div class="loader" id="loader"></div>
+        <div class="divider"></div>
 
-    <div class="msg" id="msg"></div>
-  </form>
-</div>
+        <!-- Meal Preferences -->
+        <div class="form-section">
+          <div class="section-title">Meal & Dietary Preferences</div>
+          <div class="field">
+            <label>Dietary Requirements</label>
+            <div class="check-group">
+              <div class="check-option">
+                <input type="checkbox" id="diet-none" name="dietary" value="None" />
+                <label for="diet-none">No restrictions</label>
+              </div>
+              <div class="check-option">
+                <input type="checkbox" id="diet-veg" name="dietary" value="Vegetarian" />
+                <label for="diet-veg">Vegetarian</label>
+              </div>
+              <div class="check-option">
+                <input type="checkbox" id="diet-vegan" name="dietary" value="Vegan" />
+                <label for="diet-vegan">Vegan</label>
+              </div>
+              <div class="check-option">
+                <input type="checkbox" id="diet-halal" name="dietary" value="Halal" />
+                <label for="diet-halal">Halal</label>
+              </div>
+              <div class="check-option">
+                <input type="checkbox" id="diet-kosher" name="dietary" value="Kosher" />
+                <label for="diet-kosher">Kosher</label>
+              </div>
+              <div class="check-option">
+                <input type="checkbox" id="diet-gf" name="dietary" value="Gluten-Free" />
+                <label for="diet-gf">Gluten-Free</label>
+              </div>
+              <div class="check-option">
+                <input type="checkbox" id="diet-nut" name="dietary" value="Nut Allergy" />
+                <label for="diet-nut">Nut Allergy</label>
+              </div>
+            </div>
+          </div>
+          <div class="field" style="margin-top:1rem;">
+            <label for="special-needs">Special Requests or Accessibility Needs</label>
+            <textarea id="special-needs" name="specialNeeds" placeholder="e.g. wheelchair access, baby seat, food allergy details…"></textarea>
+          </div>
+        </div>
 
-<script>
-const form = document.getElementById("form");
-const msg = document.getElementById("msg");
-const btn = document.getElementById("btn");
-const loader = document.getElementById("loader");
+        <div class="divider"></div>
 
-let lock = false;
+        <!-- Volunteering -->
+        <div class="form-section">
+          <div class="section-title">Volunteering</div>
+          <div class="field">
+            <label>Would you like to volunteer at the event?</label>
+            <div class="check-group">
+              <div class="check-option">
+                <input type="checkbox" id="vol-setup" name="volunteer" value="Setup & Decor" />
+                <label for="vol-setup">Setup & Decor</label>
+              </div>
+              <div class="check-option">
+                <input type="checkbox" id="vol-food" name="volunteer" value="Food & Catering" />
+                <label for="vol-food">Food & Catering</label>
+              </div>
+              <div class="check-option">
+                <input type="checkbox" id="vol-reg" name="volunteer" value="Registration Desk" />
+                <label for="vol-reg">Registration Desk</label>
+              </div>
+              <div class="check-option">
+                <input type="checkbox" id="vol-photo" name="volunteer" value="Photography" />
+                <label for="vol-photo">Photography</label>
+              </div>
+              <div class="check-option">
+                <input type="checkbox" id="vol-kids" name="volunteer" value="Children's Area" />
+                <label for="vol-kids">Children's Area</label>
+              </div>
+            </div>
+          </div>
+        </div>
 
-form.addEventListener("submit", async (e) => {
-  e.preventDefault();
+        <!-- Submit -->
+        <div class="submit-wrap">
+          <button type="submit" class="btn-submit" id="submit-btn">
+            <span id="btn-text">Register Now</span>
+            <div class="spinner" id="btn-spinner"></div>
+            <svg id="btn-icon" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M4 10h12M10 4l6 6-6 6"/>
+            </svg>
+          </button>
+          <p class="submit-note">Your information is kept private and used only for event planning.</p>
+          <div id="form-message"></div>
+        </div>
 
-  if (lock) return;
-  lock = true;
+      </form>
+    </div>
 
-  btn.style.display = "none";
-  loader.style.display = "block";
-  msg.innerText = "";
+    <div class="footer-strip">
+      &copy; 2025 Labour Day Celebration &nbsp;·&nbsp; All are welcome
+    </div>
 
-  const data = {
-    name: form.name.value,
-    phone: form.phone.value,
-    diet: form.diet.value,
-    pdpa: form.pdpa.checked,
-    company: form.company.value
-  };
+  </div>
 
-  try {
-    const res = await fetch("https://script.google.com/macros/s/AKfycbxG3aYMQsy3piEpgFIJx2zIYW3z9kkulCf4jfEjtjKaexVm84vCpcii2LMhDvkiDTv2/exec
-", {
-      method: "POST",
-      body: JSON.stringify(data)
+  <script>
+    // ─── CONFIGURATION ─────────────────────────────────────────────────────────
+    // Replace this URL with your Google Apps Script Web App URL after deployment
+    const GOOGLE_SCRIPT_URL = 'YOUR_GOOGLE_APPS_SCRIPT_URL_HERE';
+    // ───────────────────────────────────────────────────────────────────────────
+
+    const form = document.getElementById('reg-form');
+    const submitBtn = document.getElementById('submit-btn');
+    const btnText = document.getElementById('btn-text');
+    const btnSpinner = document.getElementById('btn-spinner');
+    const btnIcon = document.getElementById('btn-icon');
+    const formMessage = document.getElementById('form-message');
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+
+      // Basic validation
+      const required = form.querySelectorAll('[required]');
+      let valid = true;
+      required.forEach(field => {
+        if (field.type === 'radio') {
+          const group = form.querySelectorAll(`[name="${field.name}"]`);
+          const anyChecked = [...group].some(r => r.checked);
+          if (!anyChecked) valid = false;
+        } else if (!field.value.trim()) {
+          field.style.borderColor = '#E57373';
+          field.addEventListener('input', () => field.style.borderColor = '', { once: true });
+          valid = false;
+        }
+      });
+
+      if (!valid) {
+        showMessage('error', 'Please fill in all required fields before submitting.');
+        return;
+      }
+
+      // Gather dietary checkboxes
+      const dietaryValues = [...form.querySelectorAll('[name="dietary"]:checked')].map(c => c.value).join(', ') || 'None specified';
+      const volunteerValues = [...form.querySelectorAll('[name="volunteer"]:checked')].map(c => c.value).join(', ') || 'Not volunteering';
+
+      const payload = {
+        timestamp: new Date().toLocaleString(),
+        firstName: form.firstName.value.trim(),
+        lastName: form.lastName.value.trim(),
+        email: form.email.value.trim(),
+        phone: form.phone.value.trim(),
+        department: form.department.value,
+        membership: form.membership.value,
+        attending: form.attending.value,
+        guests: form.guests.value || '0',
+        tshirt: form.tshirt.value,
+        dietary: dietaryValues,
+        specialNeeds: form.specialNeeds.value.trim(),
+        volunteer: volunteerValues,
+      };
+
+      setLoading(true);
+      formMessage.style.display = 'none';
+
+      try {
+        await fetch(GOOGLE_SCRIPT_URL, {
+          method: 'POST',
+          mode: 'no-cors',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        });
+
+        // no-cors means we can't read the response, so we assume success
+        showMessage('success', '🎉 You\'re registered! We look forward to celebrating with you. See you on Labour Day!');
+        form.reset();
+      } catch (err) {
+        showMessage('error', 'Something went wrong. Please try again or contact us directly.');
+      } finally {
+        setLoading(false);
+      }
     });
 
-    const result = await res.json();
-
-    if (result.status === "success") {
-      msg.className = "msg success";
-      msg.innerText = "✅ Registration Successful!";
-      form.reset();
-    } else {
-      msg.className = "msg error";
-      msg.innerText = "❌ " + result.message;
+    function setLoading(loading) {
+      submitBtn.disabled = loading;
+      btnText.textContent = loading ? 'Submitting…' : 'Register Now';
+      btnSpinner.style.display = loading ? 'block' : 'none';
+      btnIcon.style.display = loading ? 'none' : 'block';
     }
 
-  } catch (err) {
-    msg.className = "msg error";
-    msg.innerText = "❌ Network Error";
-  }
-
-  btn.style.display = "block";
-  loader.style.display = "none";
-  btn.innerText = "Submit";
-  lock = false;
-});
-</script>
-
+    function showMessage(type, msg) {
+      formMessage.className = type;
+      formMessage.textContent = msg;
+      formMessage.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    }
+  </script>
 </body>
 </html>
