@@ -1,46 +1,152 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Registration</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Event Registration</title>
+
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: linear-gradient(135deg, #667eea, #764ba2);
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .card {
+      width: 92%;
+      max-width: 380px;
+      background: white;
+      border-radius: 16px;
+      padding: 20px;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+      animation: fadeIn 0.4s ease-in-out;
+    }
+
+    @keyframes fadeIn {
+      from { transform: translateY(20px); opacity: 0; }
+      to { transform: translateY(0); opacity: 1; }
+    }
+
+    h2 {
+      text-align: center;
+      margin-bottom: 15px;
+    }
+
+    input, select {
+      width: 100%;
+      padding: 12px;
+      margin: 10px 0;
+      border-radius: 10px;
+      border: 1px solid #ddd;
+      font-size: 14px;
+      outline: none;
+    }
+
+    input:focus, select:focus {
+      border-color: #667eea;
+      box-shadow: 0 0 5px rgba(102,126,234,0.4);
+    }
+
+    label {
+      font-size: 13px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-top: 5px;
+    }
+
+    button {
+      width: 100%;
+      padding: 12px;
+      margin-top: 15px;
+      background: #667eea;
+      color: white;
+      border: none;
+      border-radius: 10px;
+      font-size: 15px;
+      cursor: pointer;
+      transition: 0.2s;
+    }
+
+    button:active {
+      transform: scale(0.97);
+    }
+
+    button:disabled {
+      background: #999;
+    }
+
+    .msg {
+      text-align: center;
+      margin-top: 10px;
+      font-size: 14px;
+    }
+
+    .success { color: green; }
+    .error { color: red; }
+
+    .loader {
+      border: 3px solid #f3f3f3;
+      border-top: 3px solid #667eea;
+      border-radius: 50%;
+      width: 18px;
+      height: 18px;
+      animation: spin 1s linear infinite;
+      margin: 0 auto;
+      display: none;
+    }
+
+    @keyframes spin {
+      100% { transform: rotate(360deg); }
+    }
+  </style>
 </head>
+
 <body>
 
-<h2>Event Registration</h2>
+<div class="card">
+  <h2>Register Now</h2>
 
-<form id="form">
+  <form id="form">
 
-  <input type="text" name="name" placeholder="Name" required>
+    <input type="text" name="name" placeholder="Full Name" required>
 
-  <input type="text" name="phone"
-         placeholder="Phone (8 digits)"
-         required
-         pattern="^[89][0-9]{7}$">
+    <input type="text"
+           name="phone"
+           placeholder="Phone Number"
+           required
+           pattern="^[89][0-9]{7}$">
 
-  <select name="diet" required>
-    <option value="">Select Diet</option>
-    <option value="Veg">Veg</option>
-    <option value="Non-Veg">Non-Veg</option>
-  </select>
+    <select name="diet" required>
+      <option value="">Dietary Preference</option>
+      <option value="Veg">Veg</option>
+      <option value="Non-Veg">Non-Veg</option>
+    </select>
 
-  <!-- PDPA -->
-  <label>
-    <input type="checkbox" name="pdpa" required>
-    I agree to PDPA terms
-  </label>
+    <label>
+      <input type="checkbox" name="pdpa" required>
+      I agree to PDPA terms
+    </label>
 
-  <!-- Honeypot (hidden) -->
-  <input type="text" name="company" style="display:none">
+    <!-- Honeypot -->
+    <input type="text" name="company" style="display:none">
 
-  <button type="submit" id="btn">Submit</button>
+    <button id="btn" type="submit">Submit</button>
 
-</form>
+    <div class="loader" id="loader"></div>
 
-<p id="msg"></p>
+    <div class="msg" id="msg"></div>
+  </form>
+</div>
 
 <script>
 const form = document.getElementById("form");
 const msg = document.getElementById("msg");
 const btn = document.getElementById("btn");
+const loader = document.getElementById("loader");
 
 let lock = false;
 
@@ -49,16 +155,17 @@ form.addEventListener("submit", async (e) => {
 
   if (lock) return;
   lock = true;
-  btn.disabled = true;
-  btn.innerText = "Submitting...";
+
+  btn.style.display = "none";
+  loader.style.display = "block";
+  msg.innerText = "";
 
   const data = {
     name: form.name.value,
     phone: form.phone.value,
     diet: form.diet.value,
     pdpa: form.pdpa.checked,
-    company: form.company.value,
-    origin: window.location.origin
+    company: form.company.value
   };
 
   try {
@@ -70,19 +177,23 @@ form.addEventListener("submit", async (e) => {
     const result = await res.json();
 
     if (result.status === "success") {
-      msg.innerText = "Registration successful!";
+      msg.className = "msg success";
+      msg.innerText = "✅ Registration Successful!";
       form.reset();
     } else {
-      msg.innerText = result.message;
+      msg.className = "msg error";
+      msg.innerText = "❌ " + result.message;
     }
 
   } catch (err) {
-    msg.innerText = "Error submitting form";
+    msg.className = "msg error";
+    msg.innerText = "❌ Network Error";
   }
 
-  lock = false;
-  btn.disabled = false;
+  btn.style.display = "block";
+  loader.style.display = "none";
   btn.innerText = "Submit";
+  lock = false;
 });
 </script>
 
